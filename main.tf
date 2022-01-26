@@ -29,9 +29,9 @@ resource "aws_ec2_client_vpn_endpoint" "this" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_ec2_client_vpn_network_association" "this" {
-  for_each               = toset(var.subnet_ids)
+  count                  = length(var.subnet_ids)
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.this.id
-  subnet_id              = each.key
+  subnet_id              = var.subnet_ids[count.index]
   security_groups = [
     aws_security_group.this.id
   ]
